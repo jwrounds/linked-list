@@ -7,7 +7,7 @@ class LinkedList
     @size = 0
   end
 
-  def append value
+  def append(value)
     new_node = Node.new(value)
     self.tail.next = new_node if self.tail
     self.tail = new_node
@@ -15,7 +15,7 @@ class LinkedList
     self.head = new_node unless self.head
   end
 
-  def prepend value
+  def prepend(value)
     new_node = Node.new(value)
     new_node.next = self.head if self.head
     self.head = new_node
@@ -27,7 +27,7 @@ class LinkedList
     self.check_node_index(self.head, index)
   end
 
-  def check_node_index node, index, pointer = 0
+  def check_node_index(node, index, pointer = 0)
     if pointer == index
       return node
     elsif pointer < self.size
@@ -43,7 +43,7 @@ class LinkedList
     self.tail = new_tail
   end
 
-  def contains? value, node = self.head
+  def contains?(value, node = self.head)
     if node.next 
       node.value == value ? true : self.contains?(value, node.next)
     else
@@ -51,7 +51,7 @@ class LinkedList
     end
   end
 
-  def find value, node = self.head, pointer = 0
+  def find(value, node = self.head, pointer = 0)
     if node.value == value
       return pointer
     elsif pointer < self.size - 1
@@ -73,6 +73,22 @@ class LinkedList
     string
   end
 
+  def insert_at(value, index)
+    new_node = Node.new(value)
+    left_node = self.at(index - 1)
+    right_node = self.at(index)
+    left_node.next = new_node
+    new_node.next = right_node
+    self.size += 1
+  end
+
+  def remove_at(index)
+    left_node = self.at(index - 1)
+    right_node = self.at(index + 1)
+    left_node.next = right_node
+    self.size -= 1
+  end
+
 end
 
 class Node
@@ -84,10 +100,3 @@ class Node
   end
 
 end
-
-list = LinkedList.new 
-list.append 12
-list.append 14
-list.append 5
-
-p list.to_s
