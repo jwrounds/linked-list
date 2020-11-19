@@ -37,19 +37,40 @@ class LinkedList
   end
 
   def pop
-    
+    self.size -= 1
+    new_tail = self.at(self.size - 1)
+    new_tail.next = nil
+    self.tail = new_tail
   end
 
-  def contains? value
-
+  def contains? value, node = self.head
+    if node.next 
+      node.value == value ? true : self.contains?(value, node.next)
+    else
+      false
+    end
   end
 
-  def find value
-
+  def find value, node = self.head, pointer = 0
+    if node.value == value
+      return pointer
+    elsif pointer < self.size - 1
+      pointer += 1
+      self.find(value, node.next, pointer)
+    else
+      return nil
+    end
   end
 
   def to_s
-
+    string = ""
+    node = self.head
+    while node
+      string += "( #{node.value} )"
+      string += " -> " if node.next
+      node = node.next
+    end
+    string
   end
 
 end
@@ -68,9 +89,5 @@ list = LinkedList.new
 list.append 12
 list.append 14
 list.append 5
-list.prepend 15
-list.prepend "hello"
 
-p list.head.value
-p list.tail.value
-p list.at(2).value
+p list.to_s
